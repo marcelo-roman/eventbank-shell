@@ -1,26 +1,37 @@
 # EventBank shell
 
-The host application of the [EventBank](https://github.com/marcelo-roman/eventbank-platform) micro-frontends. It owns the frame: top bar, navigation, routes and the visual theme. Every screen inside it comes from a remote that is built and deployed on its own.
+The host application of the [EventBank](https://github.com/marcelo-roman/eventbank-platform) micro-frontends. It owns the frame (top bar, navigation, routes, theme) and the session: it signs people in with Keycloak and hands each remote what it needs to call the API.
 
-| Route            | Remote           | Repository                                                                            |
-| ---------------- | ---------------- | ------------------------------------------------------------------------------------- |
-| `/accounts/*`    | `accounts/App`   | [eventbank-mfe-accounts](https://github.com/marcelo-roman/eventbank-mfe-accounts)     |
-| `/transfers/*`   | `transfers/App`  | [eventbank-mfe-transfers](https://github.com/marcelo-roman/eventbank-mfe-transfers)   |
-| `/projections/*` | `operations/App` | [eventbank-mfe-operations](https://github.com/marcelo-roman/eventbank-mfe-operations) |
+## Signing in
 
-## How remotes are loaded
+The shell is the `eventbank-web` public client in [eventbank-identity](https://github.com/marcelo-roman/eventbank-identity) and uses [`oidc-client-ts`](https://github.com/authts/oidc-client-ts) for the authorization code flow with **PKCE (S256)**:
 
-Remotes are [Module Federation](https://module-federation.io) modules. The shell does not know their addresses at build time: on first navigation it reads `/config.json` and registers them with the federation runtime ([`remotes.ts`](src/remotes.ts)). In the container that file is written at startup from `ACCOUNTS_REMOTE_URL`, `TRANSFERS_REMOTE_URL` and `OPERATIONS_REMOTE_URL`, so a remote can move or ship a new version without rebuilding the shell.
+- **Sign in** and **Open your account** redirect to Keycloak; the second adds `prompt=create` to land on the sign-up form.
+- `/callback` exchanges the code and the `code_verifier` for tokens, then returns to the page the person wanted.
+- Tokens live in `sessionStorage` and renew silently with the refresh token.
+- Roles come from `realm_access.roles` in the access token.
 
-`react`, `react-dom`, `react-router` and `@tanstack/react-query` are shared as singletons. Each remote mounts under the shell's router and brings its own query client.
+## Routes
 
-Each remote renders inside a [`RemoteBoundary`](src/RemoteBoundary.tsx): if one is down, its area says so and the rest of the application keeps working.
+| Route            | Remote                                                                 | Who                                |
+| ---------------- | ---------------------------------------------------------------------- | ---------------------------------- |
+| `/`              | the shell's landing page, or a redirect by role and application status | everyone                           |
+| `/onboarding/*`  | `onboarding/App`                                                       | customers                          |
+| `/accounts/*`    | `accounts/App`                                                         | customers, and operators read-only |
+| `/pix/*`         | `transfers/App`                                                        | customers                          |
+| `/cards/*`       | `cards/App`                                                            | customers                          |
+| `/backoffice/*`  | `backoffice/App`                                                       | operators                          |
+| `/projections/*` | `operations/App`                                                       | operators                          |
+
+A customer whose application is not approved yet only sees _Your application_; the menu changes on its own once it is.
 
 ## The contract with remotes
 
-- Expose `./App` as a default-exported component that renders its routes relative to its mount path.
-- Call the API with relative `/api/...` URLs; the shell's origin proxies them to the gateway.
-- Style with the classes and custom properties in [`public/theme.css`](public/theme.css) (`--paper`, `--ink`, `--write`, `--read`, `.page`, `.panel`, `.button`, `.field`, `.status`, `.stream` …) and keep anything screen-specific in the remote.
+Remotes are [Module Federation](https://module-federation.io) modules found at runtime in `/config.json` (written from environment variables when the container starts), so they deploy without rebuilding the shell. `react`, `react-dom`, `react-router` and `@tanstack/react-query` are shared singletons, and each remote sits behind an error boundary.
+
+- Expose `./App` as a default-exported component. It receives `auth = { user: { id, name, email, roles }, getAccessToken() }`.
+- Call the API with relative `/api/...` URLs and `Authorization: Bearer ${await getAccessToken()}`; the shell's origin proxies them to the gateway.
+- Style with the shell's theme in [`public/theme.css`](public/theme.css) and keep screen-specific CSS in the remote.
 
 ## Running
 
@@ -29,7 +40,7 @@ pnpm install
 pnpm dev          # http://localhost:5173, API proxied to the gateway on :5100
 ```
 
-`public/config.json` points at the remotes on ports 5174 to 5176; start them with `pnpm dev` in their repositories. To run everything at once, use [eventbank-platform](https://github.com/marcelo-roman/eventbank-platform).
+`public/config.json` points at Keycloak on :8180 and at the remotes on ports 5174 to 5179. To run everything at once, use [eventbank-platform](https://github.com/marcelo-roman/eventbank-platform).
 
 ## License
 

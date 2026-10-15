@@ -402,3 +402,97 @@ pre {
     font-size: 2rem;
   }
 }
+
+.session {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.session-name {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.landing {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+  padding-top: 72px;
+}
+
+.landing-hero h1 {
+  font-size: 3.5rem;
+  letter-spacing: -0.035em;
+  max-width: 12ch;
+}
+
+.landing-hero .lede {
+  margin-top: 20px;
+}
+
+.landing-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.landing-steps {
+  border-left: 2px solid var(--line);
+  padding-left: 28px;
+}
+
+.landing-steps ol {
+  margin: 16px 0 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 14px;
+  color: var(--muted);
+}
+
+.landing-steps li::marker {
+  color: var(--write);
+  font-weight: 650;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+
+.tabs a,
+.tabs button {
+  font: inherit;
+  padding: 10px 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--muted);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tabs a.active,
+.tabs button[aria-selected='true'] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .landing {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    padding-top: 32px;
+  }
+
+  .landing-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .session-name {
+    display: none;
+  }
+}

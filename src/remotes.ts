@@ -1,22 +1,16 @@
 import { loadRemote, registerRemotes } from '@module-federation/runtime';
 import { type ComponentType } from 'react';
-
-interface RuntimeConfig {
-  remotes: Record<string, string>;
-}
+import { type RemoteProps } from './auth/session';
+import { loadConfig } from './config';
 
 interface RemoteModule {
-  default: ComponentType;
+  default: ComponentType<RemoteProps>;
 }
 
 let registration: Promise<void> | undefined;
 
 async function registerFromConfig(): Promise<void> {
-  const response = await fetch('/config.json', { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error(`The shell configuration answered ${response.status}.`);
-  }
-  const config = (await response.json()) as RuntimeConfig;
+  const config = await loadConfig();
   registerRemotes(Object.entries(config.remotes).map(([name, entry]) => ({ name, entry, type: 'module' })));
 }
 

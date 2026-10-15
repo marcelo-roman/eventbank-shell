@@ -1,7 +1,12 @@
 {
+  "authority": "http://localhost:8180/realms/eventbank",
+  "clientId": "eventbank-web",
   "remotes": {
     "accounts": "http://localhost:5174/remoteEntry.js",
     "transfers": "http://localhost:5175/remoteEntry.js",
-    "operations": "http://localhost:5176/remoteEntry.js"
+    "operations": "http://localhost:5176/remoteEntry.js",
+    "onboarding": "http://localhost:5177/remoteEntry.js",
+    "cards": "http://localhost:5178/remoteEntry.js",
+    "backoffice": "http://localhost:5179/remoteEntry.js"
   }
 }
