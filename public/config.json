@@ -1,0 +1,7 @@
+{
+  "remotes": {
+    "accounts": "http://localhost:5174/remoteEntry.js",
+    "transfers": "http://localhost:5175/remoteEntry.js",
+    "operations": "http://localhost:5176/remoteEntry.js"
+  }
+}
