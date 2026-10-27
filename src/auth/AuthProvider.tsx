@@ -1,6 +1,7 @@
 import { type User, UserManager, WebStorageStateStore } from 'oidc-client-ts';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { loadConfig } from '../config';
+import { useLocale } from '../i18n/LocaleContext';
 import { type Auth, AuthContext } from './AuthContext';
 import { sessionUserFrom } from './session';
 
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const { locale } = useLocale();
 
   const manager = useCallback(() => {
     managerRef.current ??= createManager().then((created) => {
@@ -54,14 +56,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signingOut,
       user: user ? sessionUserFrom(user.access_token) : null,
       signIn: async (returnTo = window.location.pathname) => {
-        await (await manager()).signinRedirect({ state: { returnTo } satisfies SignInState });
+        await (
+          await manager()
+        ).signinRedirect({
+          state: { returnTo } satisfies SignInState,
+          extraQueryParams: { ui_locales: locale },
+        });
       },
       signUp: async () => {
-        await (await manager()).signinRedirect({ prompt: 'create', state: { returnTo: '/' } satisfies SignInState });
+        await (
+          await manager()
+        ).signinRedirect({
+          prompt: 'create',
+          state: { returnTo: '/' } satisfies SignInState,
+          extraQueryParams: { ui_locales: locale },
+        });
       },
       signOut: async () => {
         setSigningOut(true);
-        await (await manager()).signoutRedirect();
+        await (await manager()).signoutRedirect({ extraQueryParams: { ui_locales: locale } });
       },
       completeSignIn: async () => {
         const signedIn = await (await manager()).signinRedirectCallback();
@@ -81,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return renewed.access_token;
       },
     }),
-    [manager, ready, signingOut, user],
+    [locale, manager, ready, signingOut, user],
   );
 
   return <AuthContext value={auth}>{children}</AuthContext>;
