@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../auth/AuthContext';
+import { useLocale } from '../i18n/LocaleContext';
 
 export function Callback() {
   const { completeSignIn } = useAuth();
+  const { t } = useLocale();
   const navigate = useNavigate();
   const started = useRef(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,9 +18,9 @@ export function Callback() {
     completeSignIn()
       .then((returnTo) => navigate(returnTo, { replace: true }))
       .catch((failure: unknown) => {
-        setError(failure instanceof Error ? failure.message : 'Sign-in failed.');
+        setError(failure instanceof Error ? failure.message : t.session.signInFailed);
       });
-  }, [completeSignIn, navigate]);
+  }, [completeSignIn, navigate, t]);
 
   if (error) {
     return (
@@ -27,5 +29,5 @@ export function Callback() {
       </p>
     );
   }
-  return <p className="page muted">Signing you in…</p>;
+  return <p className="page muted">{t.session.signingIn}</p>;
 }

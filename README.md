@@ -10,6 +10,11 @@ The shell is the `eventbank-web` public client in [eventbank-identity](https://g
 - `/callback` exchanges the code and the `code_verifier` for tokens, then returns to the page the person wanted.
 - Tokens live in `sessionStorage` and renew silently with the refresh token.
 - Roles come from `realm_access.roles` in the access token.
+- Keycloak receives `ui_locales` with the current language, so its pages match the shell.
+
+## Language
+
+English and Brazilian Portuguese. The first visit follows the browser's preferred languages (any `pt` variant picks Portuguese, anything else English); the switch in the top bar overrides it and is remembered in `localStorage` under `eventbank.locale`.
 
 ## Routes
 
@@ -29,7 +34,7 @@ A customer whose application is not approved yet only sees _Your application_; t
 
 Remotes are [Module Federation](https://module-federation.io) modules found at runtime in `/config.json` (written from environment variables when the container starts), so they deploy without rebuilding the shell. `react`, `react-dom`, `react-router` and `@tanstack/react-query` are shared singletons, and each remote sits behind an error boundary.
 
-- Expose `./App` as a default-exported component. It receives `auth = { user: { id, name, email, roles }, getAccessToken() }`.
+- Expose `./App` as a default-exported component. It receives `auth = { user: { id, name, email, roles }, getAccessToken() }` and `locale` (`'en'` or `'pt-BR'`), and renders text, dates and amounts in that language.
 - Call the API with relative `/api/...` URLs and `Authorization: Bearer ${await getAccessToken()}`; the shell's origin proxies them to the gateway.
 - Style with the shell's theme in [`public/theme.css`](public/theme.css) and keep screen-specific CSS in the remote.
 

@@ -1,7 +1,7 @@
 import { Component, type ReactNode } from 'react';
 
 interface RemoteBoundaryProps {
-  label: string;
+  unavailable: string;
   children: ReactNode;
 }
 
@@ -23,8 +23,7 @@ export class RemoteBoundary extends Component<RemoteBoundaryProps, RemoteBoundar
     return (
       <div className="page">
         <p className="error" role="alert">
-          {this.props.label} is unavailable right now. The rest of EventBank keeps working; reload the page to try
-          again.
+          {this.props.unavailable}
         </p>
       </div>
     );

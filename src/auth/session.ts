@@ -1,3 +1,5 @@
+import { type Locale } from '../i18n/locale';
+
 export type Role = 'customer' | 'operator';
 
 export interface SessionUser {
@@ -14,6 +16,7 @@ export interface RemoteAuth {
 
 export interface RemoteProps {
   auth: RemoteAuth;
+  locale: Locale;
 }
 
 interface AccessTokenClaims {
