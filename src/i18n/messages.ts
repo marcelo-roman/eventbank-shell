@@ -4,6 +4,24 @@ const en = {
   skipToContent: 'Skip to content',
   mainNavigation: 'Main',
   language: 'Language',
+  menu: 'Menu',
+  theme: {
+    label: 'Theme',
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+    useDark: 'Use the dark theme',
+    useLight: 'Use the light theme',
+  },
+  sections: {
+    banking: 'Banking',
+    operations: 'Operations',
+  },
+  roles: {
+    customer: 'Customer',
+    operator: 'Operator',
+  },
+  account: 'My account and password',
   nav: {
     application: 'Your application',
     accounts: 'Accounts',
@@ -35,6 +53,7 @@ const en = {
   remoteUnavailable: (label: string) =>
     `${label} is unavailable right now. The rest of EventBank keeps working; reload the page to try again.`,
   landing: {
+    eyebrow: 'Event sourcing · CQRS · Sagas',
     title: 'Banking built on events.',
     lede: 'Open an account, send PIX, pay with a virtual card. Every balance you see is the sum of the facts recorded about your money, and you can replay any of them.',
     openAccount: 'Open your account',
@@ -54,6 +73,24 @@ const ptBR: Messages = {
   skipToContent: 'Pular para o conteúdo',
   mainNavigation: 'Principal',
   language: 'Idioma',
+  menu: 'Menu',
+  theme: {
+    label: 'Tema',
+    light: 'Claro',
+    dark: 'Escuro',
+    system: 'Sistema',
+    useDark: 'Usar o tema escuro',
+    useLight: 'Usar o tema claro',
+  },
+  sections: {
+    banking: 'Banco',
+    operations: 'Operação',
+  },
+  roles: {
+    customer: 'Cliente',
+    operator: 'Operador',
+  },
+  account: 'Minha conta e senha',
   nav: {
     application: 'Sua proposta',
     accounts: 'Contas',
@@ -85,6 +122,7 @@ const ptBR: Messages = {
   remoteUnavailable: (label: string) =>
     `${label} está indisponível no momento. O resto do EventBank continua funcionando; recarregue a página para tentar de novo.`,
   landing: {
+    eyebrow: 'Event sourcing · CQRS · Sagas',
     title: 'Um banco feito de eventos.',
     lede: 'Abra uma conta, envie PIX, pague com um cartão virtual. Cada saldo que você vê é a soma dos fatos registrados sobre o seu dinheiro, e você pode reproduzir qualquer um deles.',
     openAccount: 'Abra sua conta',

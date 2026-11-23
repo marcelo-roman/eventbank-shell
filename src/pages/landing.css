@@ -1,0 +1,91 @@
+.landing {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  max-width: none;
+  min-height: calc(100vh - 140px);
+  padding-top: 32px;
+}
+
+.landing-hero {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+
+.landing-eyebrow {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.landing-hero h1 {
+  font-size: 2.75rem;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  max-width: 13ch;
+}
+
+.landing-hero .lede {
+  font-size: 1.05rem;
+  max-width: 52ch;
+}
+
+.landing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.landing-steps {
+  padding: 24px;
+}
+
+.landing-steps ol {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.landing-steps li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  color: var(--text-2);
+  counter-increment: step;
+}
+
+.landing-steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .landing {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    min-height: 0;
+    padding-top: 24px;
+  }
+
+  .landing-hero h1 {
+    font-size: 2.1rem;
+  }
+}

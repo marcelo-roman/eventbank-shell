@@ -1,4 +1,3 @@
-import './LocaleSwitch.css';
 import { locales } from './locale';
 import { useLocale } from './LocaleContext';
 
@@ -9,14 +8,15 @@ export function LocaleSwitch() {
   const { locale, t, setLocale } = useLocale();
 
   return (
-    <div className="locale-switch" role="group" aria-label={t.language}>
+    <div className="segmented" role="radiogroup" aria-label={t.language}>
       {locales.map((option) => (
         <button
           key={option}
           type="button"
+          role="radio"
           lang={option}
           aria-label={names[option]}
-          aria-pressed={option === locale}
+          aria-checked={option === locale}
           onClick={() => {
             setLocale(option);
           }}

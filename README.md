@@ -12,6 +12,10 @@ The shell is the `eventbank-web` public client in [eventbank-identity](https://g
 - Roles come from `realm_access.roles` in the access token.
 - Keycloak receives `ui_locales` with the current language, so its pages match the shell.
 
+## Look and feel
+
+A sidebar with the sections for the signed-in role, collapsible on wide screens and a drawer on narrow ones; a top bar with the language, the theme and the user menu. The theme follows the system until someone picks light or dark, remembered in `localStorage` under `eventbank.theme`; the Keycloak login theme in [eventbank-identity](https://github.com/marcelo-roman/eventbank-identity) reads the same key, so both match on the same origin. The production build links `theme.css` with a content hash in the query string, so a CDN never serves an old theme.
+
 ## Language
 
 English and Brazilian Portuguese. The first visit follows the browser's preferred languages (any `pt` variant picks Portuguese, anything else English); the switch in the top bar overrides it and is remembered in `localStorage` under `eventbank.locale`.
@@ -36,7 +40,7 @@ Remotes are [Module Federation](https://module-federation.io) modules found at r
 
 - Expose `./App` as a default-exported component. It receives `auth = { user: { id, name, email, roles }, getAccessToken() }` and `locale` (`'en'` or `'pt-BR'`), and renders text, dates and amounts in that language.
 - Call the API with relative `/api/...` URLs and `Authorization: Bearer ${await getAccessToken()}`; the shell's origin proxies them to the gateway.
-- Style with the shell's theme in [`public/theme.css`](public/theme.css) and keep screen-specific CSS in the remote.
+- Style with the shell's theme in [`public/theme.css`](public/theme.css): its tokens (`--bg`, `--surface`, `--border`, `--text`, `--muted`, `--accent`, `--up`, `--down`, `--warn`, `--write`) switch between light and dark, and its classes (`page`, `panel`, `list`, `data-table`, `table-wrap`, `button`, `field`, `status`, `tabs`) give the shared shapes. Keep screen-specific CSS in the remote.
 
 ## Running
 

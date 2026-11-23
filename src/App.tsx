@@ -1,12 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { AuthProvider } from './auth/AuthProvider';
 import { LocaleProvider } from './i18n/LocaleProvider';
-import { useLocale } from './i18n/LocaleContext';
+import { Frame } from './layout/Frame';
 import { Callback } from './pages/Callback';
 import { Home } from './pages/Home';
 import { Protected } from './Protected';
 import { remoteApp } from './RemoteApp';
-import { TopBar } from './TopBar';
 
 const OnboardingApp = remoteApp('onboarding');
 const AccountsApp = remoteApp('accounts');
@@ -15,23 +14,12 @@ const CardsApp = remoteApp('cards');
 const BackofficeApp = remoteApp('backoffice');
 const OperationsApp = remoteApp('operations');
 
-function SkipLink() {
-  const { t } = useLocale();
-  return (
-    <a className="skip" href="#main">
-      {t.skipToContent}
-    </a>
-  );
-}
-
 export function App() {
   return (
     <BrowserRouter>
       <LocaleProvider>
         <AuthProvider>
-          <SkipLink />
-          <TopBar />
-          <main id="main">
+          <Frame>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/callback" element={<Callback />} />
@@ -43,7 +31,7 @@ export function App() {
               <Route path="/projections/*" element={<Protected roles={['operator']} app={OperationsApp} />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </main>
+          </Frame>
         </AuthProvider>
       </LocaleProvider>
     </BrowserRouter>

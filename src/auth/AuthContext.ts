@@ -8,6 +8,7 @@ export interface Auth {
   signIn: (returnTo?: string) => Promise<void>;
   signUp: () => Promise<void>;
   signOut: () => Promise<void>;
+  manageAccount: () => Promise<void>;
   completeSignIn: () => Promise<string>;
   getAccessToken: () => Promise<string>;
 }

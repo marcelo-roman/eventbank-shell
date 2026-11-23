@@ -1,3 +1,4 @@
+import './landing.css';
 import { useAuth } from '../auth/AuthContext';
 import { useLocale } from '../i18n/LocaleContext';
 
@@ -8,6 +9,7 @@ export function Landing() {
   return (
     <div className="page landing">
       <section className="landing-hero">
+        <span className="landing-eyebrow">{t.landing.eyebrow}</span>
         <h1>{t.landing.title}</h1>
         <p className="lede">{t.landing.lede}</p>
         <div className="landing-actions">
@@ -19,7 +21,7 @@ export function Landing() {
           </button>
         </div>
       </section>
-      <section className="landing-steps" aria-labelledby="steps-title">
+      <section className="panel landing-steps" aria-labelledby="steps-title">
         <h2 id="steps-title">{t.landing.stepsTitle}</h2>
         <ol>
           {t.landing.steps.map((step) => (

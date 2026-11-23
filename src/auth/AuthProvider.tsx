@@ -76,6 +76,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSigningOut(true);
         await (await manager()).signoutRedirect({ extraQueryParams: { ui_locales: locale } });
       },
+      manageAccount: async () => {
+        const config = await loadConfig();
+        window.location.assign(`${config.authority}/account`);
+      },
       completeSignIn: async () => {
         const signedIn = await (await manager()).signinRedirectCallback();
         setUser(signedIn);

@@ -1,7 +1,8 @@
-import '@fontsource-variable/schibsted-grotesk';
+import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import './theme/theme';
 import { App } from './App';
 
 const root = document.getElementById('root');
